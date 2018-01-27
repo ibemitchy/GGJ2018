@@ -21,38 +21,43 @@ public class Infection : MonoBehaviour {
 	}
 
     // increment number of infections
-	public void incrementInfectionNumber()
+	public void IncrementInfectionNumber()
 	{
 		this.infectionNum++;
+        if (infectionNum > 0)
+        {
+            infectedFlag = true;
+        }
 	}
 	
     // decrement number of infections
-	public void decrementInfectionNumber()
+	public void DecrementInfectionNumber()
 	{
 		if (this.infectedFlag)
 		{
 			this.infectionNum--;
 		}	
+        if (infectionNum == 0)
+        {
+            infectedFlag = false;
+        }
 	}
 
     // if the object is hitted, decrement the number of infections
-	public void hittedByProjectile()
+	public void HittedByProjectile()
 	{
-		incrementInfectionNumber();
+		IncrementInfectionNumber();
         projectileNum = infectionNum;
 	}
 
     // if the object hit others successfully, increment the number of infections
-    public void successfulHit(){
-        decrementInfectionNumber();
+    public void SuccessfulHit(){
+        DecrementInfectionNumber();
         projectileNum = infectionNum;
-        if(infectionNum == 0){
-            infectedFlag = false;
-        }
     }
 
     // lunch projectile
-	public void lunchProjectile()
+	public void LunchProjectile()
 	{
         if (projectileNum > 0){
             // 
@@ -61,7 +66,7 @@ public class Infection : MonoBehaviour {
 	}
 
     // take damage on health by damage * infectionNum
-    public void damageHealth(){
+    public void DamageHealth(){
         h.takeDamage(damage * infectionNum);
     }
 	
