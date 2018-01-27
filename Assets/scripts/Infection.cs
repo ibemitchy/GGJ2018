@@ -60,7 +60,7 @@ public class Infection : MonoBehaviour {
         }
 	}
 
-
+    // take damage on health by damage * infectionNum
     public void damageHealth(){
         h.takeDamage(damage * infectionNum);
     }
