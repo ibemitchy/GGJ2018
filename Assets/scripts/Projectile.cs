@@ -91,10 +91,10 @@ public class Projectile : MonoBehaviour
             //This projectile has hit a player
             //Add an infection to the player
             Debug.Log("[Projectile.cs] " + collision.gameObject.name + " given infection from " + owner.name);
-            collision.gameObject.GetComponent<Infection>().incrementInfectionNumber();
+            collision.gameObject.GetComponent<Infection>().IncrementInfectionNumber();
 
             //Remove an infection from my owner
-            owner.GetComponent<Infection>().decrementInfectionNumber();
+            owner.GetComponent<Infection>().DecrementInfectionNumber();
 
             //Destroy this projectile
             DestroyImmediate(gameObject);
