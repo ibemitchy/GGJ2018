@@ -33,6 +33,11 @@ public class PoolManager : MonoBehaviour
     {
         return instance.projectilePool;
     }
+    //A method to return the max number of projectiles allowed in this scene
+    public static int GetMaxNumProjectiles()
+    {
+        return instance.maxNumProjectiles;
+    }
     //A method to return a reference to this pool manager
     public static PoolManager GetInstance()
     {

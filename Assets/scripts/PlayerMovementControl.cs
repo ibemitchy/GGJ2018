@@ -21,13 +21,13 @@ public class PlayerMovementControl : MonoBehaviour {
         float verticalMovement;
         if (!inverseFlag)
         {
-            horizontalMovement = -Input.GetAxis("Horizontal") * speed;
-            verticalMovement = -Input.GetAxis("Vertical") * speed;
+            horizontalMovement = Input.GetAxis("Horizontal") * speed;
+            verticalMovement = Input.GetAxis("Vertical") * speed;
         }
         else
         {
-            horizontalMovement = Input.GetAxis("Horizontal") * speed;
-            verticalMovement = Input.GetAxis("Vertical") * speed;
+            horizontalMovement = -Input.GetAxis("Horizontal") * speed;
+            verticalMovement = -Input.GetAxis("Vertical") * speed;
         }
         Vector3 movement = new Vector3(horizontalMovement, 0, verticalMovement);
         transform.Translate(movement);
