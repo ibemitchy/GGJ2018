@@ -75,7 +75,7 @@ GameObject:
   - component: {fileID: 114318925319661222}
   - component: {fileID: 114548401427468542}
   m_Layer: 0
-  m_Name: Player 1
+  m_Name: Player
   m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -394,7 +394,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 1293824771115746}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4c4f445f194654125a6794bf64d1007e, type: 3}
+  m_Script: {fileID: 11500000, guid: e8e7812f1a2e5cd4bb7eb92330337dc1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   infectionNum: 1
@@ -408,7 +408,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 1293824771115746}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 6c1e0f497690d4e9fafb301833e57c64, type: 3}
+  m_Script: {fileID: 11500000, guid: 412c7f0ec6de2ff4e9756b62db28195a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   speed: 0.1
