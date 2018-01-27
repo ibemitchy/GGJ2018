@@ -26,5 +26,7 @@ public class PlayerMovementControl : MonoBehaviour {
     public void SetSpeed(int newSpeed){
         speed = newSpeed;
     }
-
+    public float GetSpeed(){
+        return speed;
+    }
 }
