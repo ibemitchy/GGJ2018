@@ -1,9 +1,26 @@
+#Unity
 Library
+Standard Assets
 Temp
-UnityPackagerManager
+UnityPackageManager
+EffectExamples
+
+#Mac
 .DS_Store
+
+#IDE
 *.ide-wal
 .vs/GGJ2018/v15/.suo
 .vs/GGJ2018/v15/Server/sqlite3/db.lock
 *.ide
 *.ide-shm
+*.csproj
+*.userprefs
+*.cs.meta
+
+#JetBrains Rider
+.idea
+*.sln
+
+#Git
+.gitignore.log
