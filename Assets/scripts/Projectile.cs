@@ -15,9 +15,13 @@ public class Projectile : MonoBehaviour
     
     /*             PRIVATE            */
     //Timer for counting how many seconds before this projectile is destroyed
-    float lifeTimer;
+    private float lifeTimer;
+    //The player that shot this projectile
+    private GameObject owner;
+    //The rigidbody of this projectile
+    private Rigidbody body;
     //The 3D velocity of this projectile
-    Vector3 velocity;
+    private Vector3 velocity;
 
     /*=================*/
     /*          METHODS            */
@@ -38,10 +42,30 @@ public class Projectile : MonoBehaviour
     {
         return speed;
     }
+    //Returns a reference to the player that shot this projectile
+    public GameObject GetOwner()
+    {
+        return owner;
+    }
+    //Returns a reference to the rigidbody of this projectile
+    public Rigidbody GetRigidbody()
+    {
+        return body;
+    }
+    //Returns the current velocity of this projectile
+    public Vector3 GetVelocity()
+    {
+        return velocity;
+    }
     //Sets the lifespan of the projectile to the given time (in seconds)
     public void SetLifespan(float time)
     {
         lifespan = time;
+    }
+    //Sets a reference to the player that shot this projectile
+    public void SetOwner(GameObject player)
+    {
+        owner = player;
     }
     //Sets the speed of the projectile
     public void SetSpeed(float value)
@@ -54,7 +78,7 @@ public class Projectile : MonoBehaviour
     void Move()
     {
         velocity = Vector3.forward * speed;
-        transform.position += velocity;
+        body.velocity = velocity;
     }
     //Unity collision method
     void OnCollisionEnter(Collision collision)
@@ -65,6 +89,15 @@ public class Projectile : MonoBehaviour
         if(collision.gameObject.CompareTag("Player"))
         {
             //This projectile has hit a player
+            //Add an infection to the player
+            Debug.Log("[Projectile.cs] " + collision.gameObject.name + " given infection from " + owner.name);
+            collision.gameObject.GetComponent<Infection>().incrementInfectionNumber();
+
+            //Remove an infection from my owner
+            owner.GetComponent<Infection>().decrementInfectionNumber();
+
+            //Destroy this projectile
+            DestroyImmediate(gameObject);
         }
         else if(collision.gameObject.CompareTag("Wall"))
         {
@@ -74,6 +107,14 @@ public class Projectile : MonoBehaviour
     //Unity initialization method
     void Start ()
     {
+        //Reference the rigidbody
+        body = GetComponent<Rigidbody>();
+        if(!body)
+        {
+            Debug.LogError("[]");
+        }
+
+        //Set private members
         lifeTimer = lifespan;
         velocity = Vector3.zero;
 	}
