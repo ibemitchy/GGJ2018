@@ -26,7 +26,7 @@ public class Health : MonoBehaviour
    		// If character dead already, user can't heal his character
    		if (currentHealth == 0)  
    		{
-   			Debug.Log("Already Dead! Impossible to heal")
+   			Debug.Log("Already Dead! Impossible to heal");
    		}
    		// if health after heal is less than or equal to maxHealth, 
    		// currentHealth is euqal to healthAtfterHeal
