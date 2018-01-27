@@ -74,10 +74,22 @@ public class Projectile : MonoBehaviour
     }
 
     /*             PRIVATE            */
+    //Method to handle the destruction of a projectile
+    void Destroy()
+    {
+        //Reset the lifespan timer
+        lifeTimer = lifespan;
+
+        //Dereference the player
+        owner.GetComponent<Shoot>().SetOwnerFlag(false);
+        owner = null;
+
+        //Deactivate this projectile
+        gameObject.SetActive(false);
+    }
     //Method to move the projectile forward
     void Move()
     {
-        velocity = Vector3.forward * speed;
         body.velocity = velocity;
     }
     //Unity collision method
@@ -88,21 +100,43 @@ public class Projectile : MonoBehaviour
         //Check the tag of the other object
         if(collision.gameObject.CompareTag("Player"))
         {
-            //This projectile has hit a player
-            //Add an infection to the player
-            Debug.Log("[Projectile.cs] " + collision.gameObject.name + " given infection from " + owner.name);
-            collision.gameObject.GetComponent<Infection>().incrementInfectionNumber();
+            //Check that the target isn't the owner of this projectile
+            if(collision.gameObject != owner)
+            {
+                //This projectile has hit a player
+                //Add an infection to the player
+                Debug.Log("[Projectile.cs] " + collision.gameObject.name + " given infection from " + owner.name);
+                collision.transform.parent.GetComponent<Infection>().incrementInfectionNumber();
 
-            //Remove an infection from my owner
-            owner.GetComponent<Infection>().decrementInfectionNumber();
+                //Remove an infection from my owner
+                owner.transform.parent.GetComponent<Infection>().decrementInfectionNumber();
+            }
 
             //Destroy this projectile
-            DestroyImmediate(gameObject);
+            Destroy();
         }
-        else if(collision.gameObject.CompareTag("Wall"))
+        else if(collision.gameObject.CompareTag("Environment"))
         {
             //This projectile has hit a wall
+            //Create an impact effect on the wall
+
+            //Reflect the projectile
+            ContactPoint contact = collision.contacts[0];
+            float dotProduct = Vector3.Dot(contact.point, transform.forward);
+            Vector3 reflectionVector = contact.normal * dotProduct;
+            reflectionVector += transform.forward;
+            velocity = reflectionVector.normalized * speed;
         }
+    }
+    //Unity component enable logic method
+    void OnEnable()
+    {
+        ResetVelocity();
+    }
+    //Method to reset the velocity to the forward
+    void ResetVelocity()
+    {
+        velocity = transform.forward * speed;
     }
     //Unity initialization method
     void Start ()
@@ -111,13 +145,13 @@ public class Projectile : MonoBehaviour
         body = GetComponent<Rigidbody>();
         if(!body)
         {
-            Debug.LogError("[]");
+            Debug.LogError("[Projectile.cs] No rigidbody attached to " + gameObject.name);
         }
 
         //Set private members
         lifeTimer = lifespan;
-        velocity = Vector3.zero;
-	}
+        ResetVelocity();
+    }
 	//Unity update method
 	void Update ()
     {
@@ -129,7 +163,7 @@ public class Projectile : MonoBehaviour
         if(lifeTimer <= 0.0f)
         {
             //If the timer is out, kill this projectile
-            DestroyImmediate(gameObject);
+            Destroy();
         }
 	}
 }
