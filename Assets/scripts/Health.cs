@@ -4,8 +4,14 @@ using UnityEngine;
 
 public class Health : MonoBehaviour 
 {
-	private int maxHealth = 100;
-    private int currentHealth = maxHealth;
+	private int maxHealth;
+    private int currentHealth;
+
+    private void Start()
+    {
+        maxHealth = 100;
+        currentHealth = maxHealth;
+    }
 
     // If object hit by bullet, current health decreases by amount
     public void takeDamage(int amount)
