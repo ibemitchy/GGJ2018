@@ -17,11 +17,12 @@ EffectExamples
 *.csproj
 *.sln
 *.userprefs
-*.cs.meta
+*.meta
 
 #JetBrains Rider
 .idea
 *.sln
+JetBrains
 
 #Git
 .gitignore.log
