@@ -151,6 +151,12 @@ public class Projectile : MonoBehaviour
         //Set private members
         lifeTimer = lifespan;
         ResetVelocity();
+
+        //Ignore collision with all other projectiles
+        for(int p = 0; p < PoolManager.GetMaxNumProjectiles(); ++p)
+        {
+            Physics.IgnoreCollision(GetComponent<Collider>(), PoolManager.GetProjectilePool()[p].GetComponent<Collider>(), true);
+        }
     }
 	//Unity update method
 	void Update ()
