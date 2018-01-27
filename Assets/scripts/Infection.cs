@@ -75,7 +75,7 @@ public class Infection : MonoBehaviour {
         timer = time;
         timer -= Time.deltaTime;
         if (timer <= 00f){
-            damageHealth();
+            DamageHealth();
         }
         timer = time;
 	}
