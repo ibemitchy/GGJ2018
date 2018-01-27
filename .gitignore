@@ -2,3 +2,8 @@ Library
 Temp
 UnityPackagerManager
 .DS_Store
+*.ide-wal
+.vs/GGJ2018/v15/.suo
+.vs/GGJ2018/v15/Server/sqlite3/db.lock
+*.ide
+*.ide-shm
