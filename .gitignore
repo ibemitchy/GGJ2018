@@ -25,3 +25,4 @@ JetBrains
 
 #Git
 .gitignore.log
+Assets/scripts/Projectile.cs
