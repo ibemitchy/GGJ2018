@@ -63,7 +63,7 @@ public class PickUp : MonoBehaviour
     void GiveCure()
     {
         Infection infection = _player.GetComponent<Infection>();
-        infection.decrementInfectionNumber();
+        infection.DecrementInfectionNumber();
         // TODO: decrement needs to set infectedFlag to false when 0, increment needs to reset infectedFlag to true
     }
 
@@ -75,7 +75,7 @@ public class PickUp : MonoBehaviour
         foreach (GameObject player in players)
         {
             Infection infection = player.GetComponent<Infection>();
-            infection.incrementInfectionNumber();
+            infection.IncrementInfectionNumber();
         }
     }
 
