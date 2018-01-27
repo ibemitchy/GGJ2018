@@ -9,12 +9,14 @@ public class PickUp : MonoBehaviour
 //     private GameObject pickUpAnimation;
     private Collider _player;
     private int _healthPackAmount; // TODO: health should be float
+    private float _speedBoostAmount;
     private List<Action> _effects;
 
     // Use this for initialization
     void Start()
     {
         _healthPackAmount = 10;
+        _speedBoostAmount = 0.1f;
         _effects = new List<Action>();
         AddEffects();
     }
@@ -63,7 +65,7 @@ public class PickUp : MonoBehaviour
     void GiveCure()
     {
         Infection infection = _player.GetComponent<Infection>();
-        infection.decrementInfectionNumber();
+        infection.DecrementInfectionNumber();
         // TODO: decrement needs to set infectedFlag to false when 0, increment needs to reset infectedFlag to true
     }
 
@@ -75,7 +77,7 @@ public class PickUp : MonoBehaviour
         foreach (GameObject player in players)
         {
             Infection infection = player.GetComponent<Infection>();
-            infection.incrementInfectionNumber();
+            infection.IncrementInfectionNumber();
         }
     }
 
@@ -91,7 +93,7 @@ public class PickUp : MonoBehaviour
     void GiveSpeedBuff()
     {
         PlayerMovementControl movement = _player.GetComponent<PlayerMovementControl>();
-//        movement.IncrementSpeed(); // TODO: add increment method to PlayerMovementControl
+        movement.IncSpeed(_speedBoostAmount);
     }
 
     // gives player homing projectiles
@@ -145,7 +147,7 @@ public class PickUp : MonoBehaviour
     void GiveReverseControl()
     {
         PlayerMovementControl movement = _player.GetComponent<PlayerMovementControl>();
-//        movement.SetReverse(true); // TODO: add reverse boolean to PlayerMovementControl
+        movement.InvertMovement();
     }
 
     // TODO: drunk mode, jitter camera, limited vision, render trippy screen?

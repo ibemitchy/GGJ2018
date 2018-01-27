@@ -15,10 +15,7 @@ EffectExamples
 *.ide
 *.ide-shm
 *.csproj
-<<<<<<< HEAD
 *.sln
-GGJ2018.csproj
-=======
 *.userprefs
 *.cs.meta
 
@@ -28,4 +25,3 @@ GGJ2018.csproj
 
 #Git
 .gitignore.log
->>>>>>> cfc498777205d3f32266b96cd58fafbf43aba001
