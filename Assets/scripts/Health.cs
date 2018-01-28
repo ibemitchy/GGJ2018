@@ -1,11 +1,19 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class Health : MonoBehaviour 
 {
 	private int maxHealth;
-    private int currentHealth;
+    public int currentHealth;
+    public RectTransform healthBar;
+
+
+    private float nextActionTime = 0.0f;
+    public float period = 30.0f;
+
+
 
     private void Start()
     {
@@ -13,11 +21,32 @@ public class Health : MonoBehaviour
         currentHealth = maxHealth;
     }
 
+
+    private void Update()
+    {
+        if (period > nextActionTime)
+        {
+            nextActionTime += 0.1f;
+        }
+        else
+        {
+            takeDamage(1);
+            nextActionTime = 0.0f;
+        }
+
+        //// update health bar
+        healthBar.sizeDelta = new Vector2(currentHealth, healthBar.sizeDelta.y);
+        ////
+    }   
+
+
+
     // If object hit by bullet, current health decreases by amount
     public void takeDamage(int amount)
    	{
-		int healthAtferDamage = currentHealth - amount;
-        if (healthAtferDamage <= 0)
+        currentHealth -= amount;
+
+        if (currentHealth <= 0)
         {
             currentHealth = 0;
             Debug.Log("Dead!");
@@ -49,7 +78,7 @@ public class Health : MonoBehaviour
    	}
 
    	public void updateMaxHealth(int newMaxHealth) 
-   	{
+    {
    		maxHealth = newMaxHealth;
    	}
 
