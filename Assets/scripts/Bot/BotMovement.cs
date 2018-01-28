@@ -82,11 +82,11 @@ public class BotMovement : MonoBehaviour {
 
         float distance = Vector3.Distance(this.transform.position, wayPoints[wayPointInd].position);
 
-        if (distance >= 2) 
+        if (distance >= 3) 
         {
             agent.SetDestination(wayPoints[wayPointInd].position);
         }
-        else if (distance <= 2)
+        else if (distance <= 3)
         {
             wayPointInd++;
             if (wayPointInd >= wayPoints.Length) 
@@ -110,8 +110,9 @@ public class BotMovement : MonoBehaviour {
     }
 
     void Update() {
-    	if (!agent.pathPending && agent.remainingDistance < 0.5f)
-           Patrol();
+        Patrol();
+    	// if (!agent.pathPending && agent.remainingDistance < 0.5f)
+     //       Patrol();
     }
 
     
