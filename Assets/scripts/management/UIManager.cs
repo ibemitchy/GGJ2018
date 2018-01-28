@@ -7,9 +7,13 @@ public class UIManager : MonoBehaviour
 {
     public static UIManager UIManagerInstance;
 
+    public Canvas menu;
+    public Canvas hud;
+
     public GameObject pausePanel;
-    public GameObject healthSlider;
-    public GameObject infectionSlider;
+    private Slider healthSlider;
+    private Slider infectionSlider;
+
     public Infection infection;
     public bool isPause;
 
@@ -39,7 +43,7 @@ public class UIManager : MonoBehaviour
         if (state)
         {
             pausePanel.gameObject.SetActive(true);
-            Time.timeScale = 0.0f;
+            //Time.timeScale = 0.0f;
         }
         else
         {
@@ -48,26 +52,33 @@ public class UIManager : MonoBehaviour
         }
     }
 
-    public void resume(){
-        isPause = false;
-        Update();
-    }
-
     public void HealthSlider(){
-        infection.h.getCurrentHealth();
+        healthSlider.value = infection.h.getCurrentHealth();
     }
 
     public void InfectionSlider()
     {
-        infection.getInfectionNum();
+        infectionSlider.value = infection.getInfectionNum();
     }
-
-
 
     // Use this for initialization
     void Start()
     {
         isPause = false;
+
+        Slider[] sliderObjects = hud.gameObject.GetComponentsInChildren<Slider>();
+        foreach(Slider slider in sliderObjects)
+        {
+            if(slider.name == "Health")
+            {
+                healthSlider = slider;
+            }
+            else if(slider.name == "Infection")
+            {
+                infectionSlider = slider;
+            }
+
+        }
         infection = GetComponent<Infection>();
     }
 
@@ -75,20 +86,14 @@ public class UIManager : MonoBehaviour
     void Update()
     {   
         
-        if (Input.GetKey(KeyCode.Q))
+        if (Input.GetKey(KeyCode.Escape))
         {
-            isPause = true;
+            menu.enabled = true;
+            //isPause = true;
         }
-        //Debug.Log("isPause = " + isPause);
+        Debug.Log("isPause = " + isPause);
 
-        if (isPause)
-        {
-            togglePanel(true);
-        }
-        else
-        {
-            togglePanel(false);
-        }
+        //togglePanel(isPause);
 
 
     }
