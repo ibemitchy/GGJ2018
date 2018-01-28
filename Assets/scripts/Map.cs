@@ -2,26 +2,33 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Networking;
 
-public class Map : MonoBehaviour
+public class Map : NetworkBehaviour
 {
     private Boolean[,] _grids;
     private float _cubeDimension;
-    public GameObject playerPrefab;
+    public GameObject pickUpPrefab;
+    public GameObject switchPrefab;
 
     void Start()
     {
         _cubeDimension = 1f;
         InitGrid1();
+        InitSwitches();
 //        Instantiate(playerPrefab, new Vector3(1, 1, 1), Quaternion.Euler(0, 0, 0));
-        
+
 //        GameObject plane = GameObject.CreatePrimitive(PrimitiveType.Cube);
 //        plane.transform.localScale = new Vector3(_grids.GetLength(0), _cubeDimension, _grids.GetLength(1));
-        
+
         GameObject cube = GameObject.CreatePrimitive(PrimitiveType.Cube);
-        cube.transform.position = new Vector3((_cubeDimension * _grids.GetLength(0) - 1) / 2, 0, (_cubeDimension * _grids.GetLength(1) - 1) / 2);
+        cube.transform.position = new Vector3((_cubeDimension * _grids.GetLength(0) - 1) / 2, 0,
+            (_cubeDimension * _grids.GetLength(1) - 1) / 2);
         cube.AddComponent<BoxCollider>();
-        cube.transform.localScale = new Vector3(_cubeDimension * _grids.GetLength(0), 1f, _cubeDimension * _grids.GetLength(1));
+        cube.transform.localScale =
+            new Vector3(_cubeDimension * _grids.GetLength(0), 1f, _cubeDimension * _grids.GetLength(1));
+
+        SpawnPickUp();
     }
 
     void InitGrid1()
@@ -101,7 +108,8 @@ public class Map : MonoBehaviour
                 if (_grids[row, col])
                 {
                     GameObject cube = GameObject.CreatePrimitive(PrimitiveType.Cube);
-                    cube.transform.position = new Vector3(_cubeDimension * row, _cubeDimension / 2, _cubeDimension * col);
+                    cube.transform.position =
+                        new Vector3(_cubeDimension * row, _cubeDimension / 2, _cubeDimension * col);
                     cube.AddComponent<BoxCollider>();
                     cube.transform.localScale = new Vector3(_cubeDimension, _cubeDimension, _cubeDimension);
                 }
@@ -109,6 +117,13 @@ public class Map : MonoBehaviour
         }
     }
 
+    // spawns switches onto the map
+    void InitSwitches()
+    {
+        GameObject switchObj = Instantiate(switchPrefab, new Vector3(1, 0, 1), transform.rotation);
+        NetworkServer.Spawn(switchObj);
+    }
+    
     // returns 3D vector of a free grid
     public Vector3 GetRandomGrid()
     {
@@ -124,5 +139,11 @@ public class Map : MonoBehaviour
         }
 
         return new Vector3(_cubeDimension * x, 0, _cubeDimension * z);
+    }
+
+    public void SpawnPickUp()
+    {
+        GameObject pickUp = Instantiate(pickUpPrefab, new Vector3(5, 0.8f, 1), transform.rotation);
+        NetworkServer.Spawn(pickUp);
     }
 }

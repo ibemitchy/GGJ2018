@@ -2,9 +2,10 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Networking;
 using Component = System.ComponentModel.Component;
 
-public class PickUp : MonoBehaviour
+public class PickUp : NetworkBehaviour
 {
 //     private GameObject pickUpAnimation;
     private Collider _player;
@@ -24,19 +25,19 @@ public class PickUp : MonoBehaviour
     // initiates list of effect functions
     void AddEffects()
     {
-        _effects.Add(GiveCure);
-        _effects.Add(GiveInfectionToAll);
-        _effects.Add(SpawnTrap);
-        _effects.Add(GiveSpeedBuff);
-        _effects.Add(GiveHomingProjectile);
-        _effects.Add(GiveRicochetProjectile);
-        _effects.Add(GiveInvincibility);
-        _effects.Add(GiveInvisibility);
+//        _effects.Add(GiveCure);
+//        _effects.Add(GiveInfectionToAll);
+//        _effects.Add(SpawnTrap);
+//        _effects.Add(GiveSpeedBuff);
+//        _effects.Add(GiveHomingProjectile);
+//        _effects.Add(GiveRicochetProjectile);
+//        _effects.Add(GiveInvincibility);
+//        _effects.Add(GiveInvisibility);
         _effects.Add(Teleport);
-        _effects.Add(MapChange);
-        _effects.Add(GiveReverseControl);
-        _effects.Add(GiveDrunkMode);
-        _effects.Add(GiveHealth);
+//        _effects.Add(MapChange);
+//        _effects.Add(GiveReverseControl);
+//        _effects.Add(GiveDrunkMode);
+//        _effects.Add(GiveHealth);
     }
 
     // collision detection
@@ -58,7 +59,9 @@ public class PickUp : MonoBehaviour
         int randomNum = random.Next(_effects.Count);
         Debug.Log(randomNum);
         _effects[randomNum]();
-//        Destroy(gameObject);
+        
+        Destroy(gameObject);
+        Network.Destroy(gameObject);
     }
 
     // decreases infection count of colliding player by 1
