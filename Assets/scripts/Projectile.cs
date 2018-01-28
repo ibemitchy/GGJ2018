@@ -81,10 +81,14 @@ public class Projectile : MonoBehaviour
         lifeTimer = lifespan;
 
         //Dereference the player
-        if(owner.CompareTag("Player"))
+        if (owner.CompareTag("Player"))
+        {
             owner.GetComponent<Shoot>().SetOwnerFlag(false);
-        else if(owner.CompareTag("Bot"))
+        }
+        else if (owner.CompareTag("Bot"))
+        {
             owner.GetComponent<BotMovement>().SetOwnerFlag(false);
+        }
 
         owner = null;
 
@@ -112,11 +116,7 @@ public class Projectile : MonoBehaviour
         fx.GetComponent<ParticleSystem>().Play();
 
         //Check the tag of the other object
-<<<<<<< HEAD
         if(collision.gameObject.CompareTag("Player") || collision.gameObject.CompareTag("Bot"))
-=======
-        if (collision.gameObject.CompareTag("Player"))
->>>>>>> 198efabcbec5d298e76e212b338ce659368f688a
         {
             //Check that the target isn't the owner of this projectile
             if(collision.gameObject != owner)
