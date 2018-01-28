@@ -133,8 +133,8 @@ public class PickUp : MonoBehaviour
     // teleports player to random location
     void Teleport()
     {
-        // TODO: get randomvector generator from maze
-//        player.transform.position = Maze.GetRandomVector();
+        Map map = GameObject.FindWithTag("Environment").GetComponent<Map>();
+        _player.transform.position = map.GetRandomGrid();
     }
 
     // forces terrain change

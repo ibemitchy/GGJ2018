@@ -41,10 +41,10 @@ GameObject:
   - component: {fileID: 136383238366132792}
   - component: {fileID: 23516308224666950}
   - component: {fileID: 195157957668620846}
-  - component: {fileID: 114665749861382358}
+  - component: {fileID: 114914971279338934}
   m_Layer: 0
   m_Name: Bot Sample
-  m_TagString: Untagged
+  m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -55,8 +55,8 @@ Transform:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1389935846702246}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 4.177952, y: -17.116356, z: 11.54303}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 7.9703627, y: -5.1551415e-16, z: 23.216694}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 4727875522896468}
@@ -170,7 +170,7 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 1, y: 1, z: 1}
   m_Center: {x: 0, y: 0, z: 0}
---- !u!114 &114665749861382358
+--- !u!114 &114914971279338934
 MonoBehaviour:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
@@ -181,7 +181,20 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a8c03e9998bde45fca042c94affe2b8f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  goal: {fileID: 4417077264008944, guid: ff803d95ca53d4d0b803359b4d7749e4, type: 2}
+  player: {fileID: 0}
+  projectileSpawnLocation: {fileID: 0}
+  wayPoints:
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  patrolSpeed: 0.5
+  chaseSpeed: 1
 --- !u!136 &136383238366132792
 CapsuleCollider:
   m_ObjectHideFlags: 1
