@@ -115,10 +115,9 @@ public class PoolManager : MonoBehaviour
         for(int i = 0; i < maxNumImpactEffects; ++i)
         {
             impactEffectPool[i] = Instantiate(impactEffectPrefab, Vector3.zero, Quaternion.identity);
-            impactEffectPool[i].GetComponent<ParticleSystem>().Stop();
-
-            impactEffectPool[i].transform.parent = impactParent.transform;
             impactEffectPool[i].SetActive(false);
+            impactEffectPool[i].transform.parent = impactParent.transform;
+            impactEffectPool[i].GetComponent<ParticleSystem>().Stop();
         }
     }
 }
