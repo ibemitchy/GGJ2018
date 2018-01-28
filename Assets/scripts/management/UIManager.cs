@@ -6,7 +6,10 @@ using UnityEngine.UI;
 public class UIManager : MonoBehaviour
 {
     public static UIManager UIManagerInstance;
+
     public GameObject pausePanel;
+    public GameObject healthSlider;
+    public GameObject infectionSlider;
     public Infection infection;
     public bool isPause;
 
@@ -36,17 +39,27 @@ public class UIManager : MonoBehaviour
         if (state)
         {
             pausePanel.gameObject.SetActive(true);
-            Time.timeScale = 00f;
+            Time.timeScale = 0.0f;
         }
         else
         {
-            Time.timeScale = 10f;
+            Time.timeScale = 1.0f;
             pausePanel.gameObject.SetActive(false);
         }
     }
 
-    void resume(){
+    public void resume(){
         isPause = false;
+        Update();
+    }
+
+    public void HealthSlider(){
+        infection.h.getCurrentHealth();
+    }
+
+    public void InfectionSlider()
+    {
+        infection.getInfectionNum();
     }
 
 
@@ -55,6 +68,7 @@ public class UIManager : MonoBehaviour
     void Start()
     {
         isPause = false;
+        infection = GetComponent<Infection>();
     }
 
     // Update is called once per frame
@@ -75,5 +89,7 @@ public class UIManager : MonoBehaviour
         {
             togglePanel(false);
         }
+
+
     }
 }

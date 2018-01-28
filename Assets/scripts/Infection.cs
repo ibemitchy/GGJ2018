@@ -8,7 +8,7 @@ public class Infection : MonoBehaviour {
 	public int infectionNum;
     private int projectileNum;
     public int damage; 
-    private Health h;
+    public Health h;
     public float time;
     private float timer;
 	
@@ -19,6 +19,14 @@ public class Infection : MonoBehaviour {
         infectionNum = 1;
         h = GetComponent<Health>();
 	}
+
+    public void setInfectionNum(int a){
+        this.infectionNum = a;
+    }
+    public int getInfectionNum()
+    {
+        return this.infectionNum;
+    }
 
     // increment number of infections
 	public void IncrementInfectionNumber()
