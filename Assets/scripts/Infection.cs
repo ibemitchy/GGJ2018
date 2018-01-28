@@ -25,7 +25,7 @@ public class Infection : MonoBehaviour {
     }
     public int getInfectionNum()
     {
-        return this.infectionNum;
+        return infectionNum;
     }
 
     // increment number of infections

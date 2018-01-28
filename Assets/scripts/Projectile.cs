@@ -87,7 +87,7 @@ public class Projectile : MonoBehaviour
         }
         else if (owner.CompareTag("Bot"))
         {
-            owner.GetComponent<BotMovement>().SetOwnerFlag(false);
+            owner.GetComponentInParent<BotMovement>().SetOwnerFlag(false);
         }
 
         owner = null;
@@ -110,10 +110,13 @@ public class Projectile : MonoBehaviour
 
         //Spawn the impact effect
         GameObject fx = PoolManager.GetImpactEffect();
-        fx.transform.position = contact.point;
-        fx.transform.rotation = Quaternion.LookRotation(contact.normal);
-        fx.SetActive(true);
-        fx.GetComponent<ParticleSystem>().Play();
+        if(fx)
+        {
+            fx.transform.position = contact.point;
+            fx.transform.rotation = Quaternion.LookRotation(contact.normal);
+            fx.SetActive(true);
+            fx.GetComponent<ParticleSystem>().Play();
+        }
 
         //Check the tag of the other object
         if(collision.gameObject.CompareTag("Player") || collision.gameObject.CompareTag("Bot"))
@@ -124,10 +127,28 @@ public class Projectile : MonoBehaviour
                 //This projectile has hit a player
                 //Add an infection to the player
                 Debug.Log("[Projectile.cs] " + collision.gameObject.name + " given infection from " + owner.name);
-                collision.transform.parent.GetComponent<Infection>().IncrementInfectionNumber();
 
-                //Remove an infection from my owner
+                collision.transform.parent.GetComponent<Infection>().IncrementInfectionNumber();
                 owner.transform.parent.GetComponent<Infection>().DecrementInfectionNumber();
+
+                //if (collision.transform.CompareTag("Player"))
+                //{
+                //    collision.transform.parent.GetComponent<Infection>().IncrementInfectionNumber();
+                //}
+                //else
+                //{
+                //    collision.transform.Get
+                //}
+                //
+                ////Remove an infection from my owner
+                //if(owner.CompareTag("Player"))
+                //{
+                //    owner.transform.parent.GetComponent<Infection>().DecrementInfectionNumber();
+                //}
+                //else
+                //{
+                //    owner.transform.parent.GetComponent<Infection>().DecrementInfectionNumber();
+                //}
             }
 
             //Destroy this projectile

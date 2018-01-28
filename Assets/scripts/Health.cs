@@ -48,8 +48,10 @@ public class Health : MonoBehaviour
 
         if (currentHealth <= 0)
         {
-            currentHealth = 0;
             Debug.Log("Dead!");
+            currentHealth = 0;
+
+            gameObject.SetActive(false);
         }
    	}
 

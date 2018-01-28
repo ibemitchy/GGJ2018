@@ -108,27 +108,33 @@ public class Shoot : MonoBehaviour
                 for(int p = 0; p < projectile.Length; ++p)
                 {
                     projectile[p] = PoolManager.GetProjectile();
-                    //Set the projectile's position and forward vector
-                    projectile[p].transform.position = projectileSpawnLocation.position;
-                    projectile[p].transform.localScale = new Vector3(scale, scale, scale);
 
-                    switch (p)
+                    if(projectile[p])
                     {
-                        case 0:
-                            projectile[p].transform.forward = transform.forward;
-                            break;
-                        case 1:
-                            projectile[p].transform.rotation = Quaternion.Euler(0.0f, -45.0f, 0.0f) * transform.rotation;
-                            break;
-                        case 2:
-                            projectile[p].transform.rotation = Quaternion.Euler(0.0f, 45.0f, 0.0f) * transform.rotation;
-                            break;
+                        //Set the projectile's position and forward vector
+                        projectile[p].transform.position = projectileSpawnLocation.position;
+                        projectile[p].transform.localScale = new Vector3(scale, scale, scale);
+
+                        switch (p)
+                        {
+                            case 0:
+                                projectile[p].transform.forward = transform.forward;
+                                break;
+                            case 1:
+                                projectile[p].transform.rotation = Quaternion.Euler(0.0f, -45.0f, 0.0f) * transform.rotation;
+                                break;
+                            case 2:
+                                projectile[p].transform.rotation = Quaternion.Euler(0.0f, 45.0f, 0.0f) * transform.rotation;
+                                break;
+                        }
+
+
+                        //Set the projectile's owner and enable it
+                        projectile[p].GetComponent<Projectile>().SetOwner(gameObject);
+                        projectile[p].SetActive(true);
+                        Debug.Log(projectile[p].name + " owner: " + gameObject.name);
                     }
                     
-
-                    //Set the projectile's owner and enable it
-                    projectile[p].GetComponent<Projectile>().SetOwner(gameObject);
-                    projectile[p].SetActive(true);
                 }
             }
         }
