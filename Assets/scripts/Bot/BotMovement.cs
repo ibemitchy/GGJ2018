@@ -3,47 +3,47 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class BotMovement : MonoBehaviour {
-    // public Transform player;
-    public GameObject player;
+    // public Transform target;
+    public GameObject target;
     public Transform projectileSpawnLocation;
     private UnityEngine.AI.NavMeshAgent agent;
     
     // MoveSpeed and Max/Min distance to shoot emeny
    
    
-    // A flag to indicate if this player owns any active projectiles
+    // A flag to indicate if this target owns any active projectiles
     private bool isOwner;
-    // A flag to indicate if this player's projectile should split into 3
+    // A flag to indicate if this target's projectile should split into 3
     private bool split;
-    // The scale that the player's projectiles should be
+    // The scale that the target's projectiles should be
     private float scale;
     // References to projectiles given by the projectile pool
     private GameObject[] projectile;
-    // The player's infection information
+    // The target's infection information
     private Infection infections;
-    // public Transform target;
+    
 
-	public Transform[] wayPoints;
+	public GameObject[] wayPoints;
     private bool alive;     
     private int wayPointInd = 0;
     private int prevPointInd = 0;
     public float patrolSpeed = 10.0f;
     public float chaseSpeed = 15.0f;
-    private const int MaxDist = 8;
-    private const int MinDist = 4;
      
-    private float range = 4.0f;
+    public float sightRange = 5.0f;
+    public float attackRange = 1.0f;
     private int multiplier = 15;
     private int numInfection = 1;
     private bool didFire;
     public float speed;
+    
 
+    public void SetOwnerFlag(bool isFlag) {
+        isOwner = isFlag;
+    }
 
-
-
-
-    void Awake() {
-        player = GameObject.FindWithTag("Player");
+    public bool GetOwnerFlag() {
+        return isOwner;
     }
 
 
@@ -51,7 +51,7 @@ public class BotMovement : MonoBehaviour {
     
     void Start () 
     {
-        // player = GameObject.FindWithTag("Player");
+        // target = GameObject.FindWithTag("target");
         agent = GetComponent<UnityEngine.AI.NavMeshAgent>();
         // infections = transform.parent.GetComponent<Infection>();
         // agent.destination = wayPoints[wayPointInd].position;
@@ -69,20 +69,20 @@ public class BotMovement : MonoBehaviour {
 
         // Quaternion newRotation = Quaternion.LookRotation(position - myTransform.position);
         
-        // agent.rotation = Quaternion.Slerp(agent.rotation, Quaternion.LookRotation(player.transform.position - agent.position), rotationSpeed * Time.deltaTime);
+        // agent.rotation = Quaternion.Slerp(agent.rotation, Quaternion.LookRotation(target.transform.position - agent.position), rotationSpeed * Time.deltaTime);
 
         if (wayPoints.Length == 0) 
         {
         	return;
         }
         
-    	agent.destination = wayPoints[wayPointInd].position;
+    	agent.destination = wayPoints[wayPointInd].transform.position;
 
-        float distance = Vector3.Distance(this.transform.position, wayPoints[wayPointInd].position);
+        float distance = Vector3.Distance(this.transform.position, wayPoints[wayPointInd].transform.position);
 
         if (distance >= 2) 
         {
-            agent.SetDestination(wayPoints[wayPointInd].position);
+            agent.SetDestination(wayPoints[wayPointInd].transform.position);
         }
         else if (distance < 2)
         {
@@ -98,82 +98,87 @@ public class BotMovement : MonoBehaviour {
 
     void Chase() {
         agent.speed = chaseSpeed;
-        agent.SetDestination(player.transform.position);
-        numInfection--;
+        agent.SetDestination(target.transform.position);
+        Debug.Log("chasing target");
+        float currDist = Vector3.Distance(this.transform.position, target.transform.position);
+        if (currDist <= attackRange) {
+            agent.SetDestination(this.transform.position);
+            Fire();
+        }
+        
   
     }
 
     void Flee() {
-        Vector3 targetDir = player.transform.position - this.transform.position;
+        Vector3 targetDir = target.transform.position - this.transform.position;
         float step = speed * Time.deltaTime;
         Vector3 newDir = Vector3.RotateTowards(transform.forward*-1, targetDir, step, 0.0F);
         Debug.DrawRay(this.transform.position, newDir, Color.red);
+        Debug.Log("running from target");
         transform.rotation = Quaternion.LookRotation(newDir);
+        numInfection = 1;
     }
 
-
-
+    void updataTarget() {
+        RaycastHit hitInfo;
+        if (Physics.SphereCast(transform.position, sightRange, transform.forward, out hitInfo)) 
+        {
+            if (hitInfo.transform.CompareTag("Player") || hitInfo.transform.CompareTag("Bot")) 
+            {
+                target = hitInfo.transform.gameObject;
+            }
+        }
+    }
 
     void Update() 
     {   
-        // Fire();
-        float currDist = Vector3.Distance(this.transform.position, player.transform.position);
-        
-
-        if (alive) 
+        updataTarget();
+        if (target) 
         {
-            if (currDist > range) // && !isCombat) 
-            {
-                Patrol();
-            }
-            else  {
-                // isCombat = true;
-                if (numInfection == 0)
-                    Flee();
-                else 
-                    Chase();
-            }
-        } 
-        // else {
-            // Destroy(agent);
-        // } 
-        
+            if (numInfection > 0) // && !isCombat) 
+                Chase();
+            else 
+                Flee();
+        }
+        else 
+            Patrol();
+
     }
 
     void Fire() 
     {   
+        //Check that this target isn't the owner of an infection that's already been launched
+        // foreach (GameObject projectile in PoolManager.GetProjectilePool())
+        // {
+        //     if (projectile.activeSelf && projectile.GetComponent<Projectile>().GetOwner() == gameObject)
+        //     {
+        //         isOwner = true;
+        //     }
+        // }
 
-        if (infections.infectionNum > 0)
-        {
-            //Check that this player isn't the owner of an infection that's already been launched
-            // foreach (GameObject projectile in PoolManager.GetProjectilePool())
-            // {
-            //     if (projectile.activeSelf && projectile.GetComponent<Projectile>().GetOwner() == gameObject)
-            //     {
-            //         isOwner = true;
-            //     }
-            // }
+        //If the target doesn't own any projectiles in the scene, fire a projectile
+        // if (!isOwner)
+        // {
+            //Get a projectile(s) from the pool
+            if(split)
+            {
+                projectile = new GameObject[3];
+                scale = 0.3f;
+            }
+            else	
+            {
+                projectile = new GameObject[1];
+                scale = 1.0f;
+            }
 
-            //If the player doesn't own any projectiles in the scene, fire a projectile
-            // if (!isOwner)
-            // {
-                //Get a projectile(s) from the pool
-                if(split)
+
+            for(int p = 0; p < projectile.Length; ++p)
+            {
+                projectile[p] = PoolManager.GetProjectile();
+                //Set the projectile's position and forward vector
+
+                if(projectile[p] != null)
                 {
-                    projectile = new GameObject[3];
-                    scale = 0.3f;
-                }
-                else	
-                {
-                    projectile = new GameObject[1];
-                    scale = 1.0f;
-                }
-
-
-                for(int p = 0; p < projectile.Length; ++p)
-                {
-                    projectile[p] = PoolManager.GetProjectile();
-                    //Set the projectile's position and forward vector
                     projectile[p].transform.position = projectileSpawnLocation.position;
                     projectile[p].transform.localScale = new Vector3(scale, scale, scale);
 
@@ -189,13 +194,16 @@ public class BotMovement : MonoBehaviour {
                             projectile[p].transform.rotation = Quaternion.Euler(0.0f, 45.0f, 0.0f) * transform.rotation;
                             break;
                     }
-                    
+                
 
                     //Set the projectile's owner and enable it
-                    projectile[p].GetComponent<Projectile>().SetOwner(gameObject);
+                    projectile[p].GetComponent<Projectile>().SetOwner(this.gameObject);
                     projectile[p].SetActive(true);
+                    Debug.Log("shooting     at target");
                 }
+                
             }
-        // }
-    }
+        }
+    // }
+    
 }

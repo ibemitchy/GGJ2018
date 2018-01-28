@@ -81,7 +81,11 @@ public class Projectile : MonoBehaviour
         lifeTimer = lifespan;
 
         //Dereference the player
-        owner.GetComponent<Shoot>().SetOwnerFlag(false);
+        if(owner.CompareTag("Player"))
+            owner.GetComponent<Shoot>().SetOwnerFlag(false);
+        else if(owner.CompareTag("Bot"))
+            owner.GetComponent<BotMovement>().SetOwnerFlag(false);
+
         owner = null;
 
         //Deactivate this projectile
@@ -98,7 +102,7 @@ public class Projectile : MonoBehaviour
         Debug.Log("[Projectile.cs] " + gameObject.name + " hit " + collision.gameObject.name);
 
         //Check the tag of the other object
-        if(collision.gameObject.CompareTag("Player"))
+        if(collision.gameObject.CompareTag("Player") || collision.gameObject.CompareTag("Bot"))
         {
             //Check that the target isn't the owner of this projectile
             if(collision.gameObject != owner)

@@ -45,18 +45,18 @@ public class GameManager : MonoBehaviour
     void Update()
     {
         //Go through the list of players and see who's alive still
-        foreach(KeyValuePair<int, GameObject> player in PlayerManager.GetPlayerList())
-        {
-            if(!possibleWinner)
-            {
-                possibleWinner = true;
-            }
-            else
-            {
-                possibleWinner = false;
-                break;
-            }
-        }
+        // foreach(KeyValuePair<int, GameObject> player in PlayerManager.GetPlayerList())
+        // {
+        //     if(!possibleWinner)
+        //     {
+        //         possibleWinner = true;
+        //     }
+        //     else
+        //     {
+        //         possibleWinner = false;
+        //         break;
+        //     }
+        // }
 
         if(possibleWinner)
         {
