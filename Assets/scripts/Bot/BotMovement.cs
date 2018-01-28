@@ -32,10 +32,10 @@ public class BotMovement : MonoBehaviour {
     private const int MaxDist = 8;
     private const int MinDist = 4;
      
-    private float range = 5.0f;
-    private int multiplier = 5;
-    private int numInfection = 1;
-    private bool isCombat;
+    private float range = 4.0f;
+    private int multiplier = 15;
+    private int numInfection = 0;
+    private bool didFire;
 
 
 
@@ -57,7 +57,7 @@ public class BotMovement : MonoBehaviour {
         
         
         alive = true;
-        isCombat = false;
+        didFire = false;
         agent.autoBraking = false;
         agent.speed = patrolSpeed;
     }
@@ -103,6 +103,7 @@ public class BotMovement : MonoBehaviour {
     void Chase() {
         agent.speed = chaseSpeed;
         agent.SetDestination(player.transform.position);
+        // didFire = true;
 
         // float distance = Vector3.Distance(this.transform.position, target.transform.position);
         
@@ -114,8 +115,20 @@ public class BotMovement : MonoBehaviour {
     }
 
     void Flee() {
-        Vector3 runTo = this.transform.position + ((this.transform.position - player.transform.position) * multiplier);
-        agent.SetDestination(runTo);
+        // Vector3 runTo = this.transform.position + ((this.transform.position - player.transform.position) * multiplier);
+        Vector3 farPoint = this.transform.position;
+        float prevDist = 1000000.0f;
+        foreach (Transform point in wayPoints) 
+        {
+            float currDist = Vector3.Distance(this.transform.position, point.transform.position);
+            if (prevDist < currDist) 
+            {
+                prevDist = currDist;
+                farPoint = point.transform.position;
+            }
+                
+        }
+        agent.SetDestination(farPoint);
     }
 
 
@@ -134,12 +147,12 @@ public class BotMovement : MonoBehaviour {
 
         if (alive) 
         {
-            if (currDist > range && !isCombat) 
+            if (currDist > range) // && !isCombat) 
             {
                 Patrol();
             }
             else  {
-                isCombat = true;
+                // isCombat = true;
                 if (numInfection == 0)
                     Flee();
                 else 
