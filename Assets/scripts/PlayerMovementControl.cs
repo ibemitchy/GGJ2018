@@ -1,8 +1,7 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
+using UnityEngine.Networking;
 
-public class PlayerMovementControl : MonoBehaviour {
+public class PlayerMovementControl : NetworkBehaviour {
     public float speed;
     private bool inverseFlag;
     private Rigidbody body;
@@ -16,12 +15,11 @@ public class PlayerMovementControl : MonoBehaviour {
             Debug.LogError("no body");
         }
     }
-    void Update()
-    {
-        
-    }
 
     void FixedUpdate () {
+        if (!isLocalPlayer)
+            return;
+        
         float horizontalMovement;
         float verticalMovement;
         if (!inverseFlag)

@@ -6,24 +6,35 @@ using UnityEngine;
 public class Map : MonoBehaviour
 {
     private Boolean[,] _grids;
+    private float _cubeDimension;
+    public GameObject playerPrefab;
 
     void Start()
     {
-//        GameObject plane = GameObject.CreatePrimitive(PrimitiveType.Plane);
+        _cubeDimension = 1f;
         InitGrid1();
+//        Instantiate(playerPrefab, new Vector3(1, 1, 1), Quaternion.Euler(0, 0, 0));
+        
+//        GameObject plane = GameObject.CreatePrimitive(PrimitiveType.Cube);
+//        plane.transform.localScale = new Vector3(_grids.GetLength(0), _cubeDimension, _grids.GetLength(1));
+        
+        GameObject cube = GameObject.CreatePrimitive(PrimitiveType.Cube);
+        cube.transform.position = new Vector3((_cubeDimension * _grids.GetLength(0) - 1) / 2, 0, (_cubeDimension * _grids.GetLength(1) - 1) / 2);
+        cube.AddComponent<BoxCollider>();
+        cube.transform.localScale = new Vector3(_cubeDimension * _grids.GetLength(0), 1f, _cubeDimension * _grids.GetLength(1));
     }
 
     void InitGrid1()
     {
         _grids = new Boolean[13, 15];
-        
+
         // set true for all boundaries
         for (int row = 0; row < _grids.GetLength(0); row++)
         {
             _grids[row, 0] = true;
             _grids[row, _grids.GetLength(1) - 1] = true;
         }
-        
+
         for (int col = 0; col < _grids.GetLength(1); col++)
         {
             _grids[0, col] = true;
@@ -90,10 +101,28 @@ public class Map : MonoBehaviour
                 if (_grids[row, col])
                 {
                     GameObject cube = GameObject.CreatePrimitive(PrimitiveType.Cube);
-                    cube.transform.position = new Vector3(row, 0, col);
+                    cube.transform.position = new Vector3(_cubeDimension * row, _cubeDimension / 2, _cubeDimension * col);
                     cube.AddComponent<BoxCollider>();
+                    cube.transform.localScale = new Vector3(_cubeDimension, _cubeDimension, _cubeDimension);
                 }
             }
         }
+    }
+
+    // returns 3D vector of a free grid
+    public Vector3 GetRandomGrid()
+    {
+        System.Random random = new System.Random();
+
+        int x = random.Next(_grids.GetLength(0));
+        int z = random.Next(_grids.GetLength(1));
+
+        while (_grids[x, z])
+        {
+            x = random.Next(_grids.GetLength(0));
+            z = random.Next(_grids.GetLength(1));
+        }
+
+        return new Vector3(_cubeDimension * x, 0, _cubeDimension * z);
     }
 }
