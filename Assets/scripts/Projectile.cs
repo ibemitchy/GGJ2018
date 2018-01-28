@@ -81,7 +81,15 @@ public class Projectile : MonoBehaviour
         lifeTimer = lifespan;
 
         //Dereference the player
-        owner.GetComponent<Shoot>().SetOwnerFlag(false);
+        if (owner.CompareTag("Player"))
+        {
+            owner.GetComponent<Shoot>().SetOwnerFlag(false);
+        }
+        else if (owner.CompareTag("Bot"))
+        {
+            owner.GetComponent<BotMovement>().SetOwnerFlag(false);
+        }
+
         owner = null;
 
         //Deactivate this projectile
@@ -97,8 +105,18 @@ public class Projectile : MonoBehaviour
     {
         Debug.Log("[Projectile.cs] " + gameObject.name + " hit " + collision.gameObject.name);
 
+        //Get the contact point
+        ContactPoint contact = collision.contacts[0];
+
+        //Spawn the impact effect
+        GameObject fx = PoolManager.GetImpactEffect();
+        fx.transform.position = contact.point;
+        fx.transform.rotation = Quaternion.LookRotation(contact.normal);
+        fx.SetActive(true);
+        fx.GetComponent<ParticleSystem>().Play();
+
         //Check the tag of the other object
-        if(collision.gameObject.CompareTag("Player"))
+        if(collision.gameObject.CompareTag("Player") || collision.gameObject.CompareTag("Bot"))
         {
             //Check that the target isn't the owner of this projectile
             if(collision.gameObject != owner)
@@ -121,7 +139,6 @@ public class Projectile : MonoBehaviour
             //Create an impact effect on the wall
 
             //Reflect the projectile
-            ContactPoint contact = collision.contacts[0];
             float dotProduct = Vector3.Dot(contact.point, transform.forward);
             Vector3 reflectionVector = contact.normal * dotProduct;
             reflectionVector += transform.forward;
