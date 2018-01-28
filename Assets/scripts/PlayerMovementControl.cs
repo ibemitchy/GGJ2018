@@ -10,15 +10,20 @@ public class PlayerMovementControl : NetworkBehaviour {
 	// Use this for initialization
     void Start () {
         inverseFlag = false;
-        body = GetComponentInChildren<Rigidbody>();
-        if (!body){
-            Debug.LogError("no body");
-        }
+//        body = GetComponentInChildren<Rigidbody>();
+//        if (!body){
+//            Debug.LogError("no body");
+//        }
     }
 
     void FixedUpdate () {
         if (!isLocalPlayer)
             return;
+
+//        var x = Input.GetAxis("Horizontal")*0.04f;
+//        var z = Input.GetAxis("Vertical")*0.04f;
+//
+//        transform.Translate(x, 0, z);
         
         float horizontalMovement;
         float verticalMovement;
@@ -34,7 +39,7 @@ public class PlayerMovementControl : NetworkBehaviour {
         }
         Vector3 movement = new Vector3(horizontalMovement, 0, verticalMovement);
         body.velocity = movement;
-        //transform.Translate(movement);
+        transform.Translate(movement);
 	}
 
     //give a new speed for player movement.
