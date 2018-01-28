@@ -5,11 +5,16 @@ using UnityEngine;
 public class PlayerMovementControl : MonoBehaviour {
     public float speed;
     private bool inverseFlag;
+    private Rigidbody body;
 
 
 	// Use this for initialization
     void Start () {
         inverseFlag = false;
+        body = GetComponentInChildren<Rigidbody>();
+        if (!body){
+            Debug.LogError("no body");
+        }
     }
     void Update()
     {
@@ -30,7 +35,8 @@ public class PlayerMovementControl : MonoBehaviour {
             verticalMovement = -Input.GetAxis("Vertical") * speed;
         }
         Vector3 movement = new Vector3(horizontalMovement, 0, verticalMovement);
-        transform.Translate(movement);
+        body.velocity = movement;
+        //transform.Translate(movement);
 	}
 
     //give a new speed for player movement.
