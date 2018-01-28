@@ -157,6 +157,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7d4edf21baae6e04c9a80e7cb074b612, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  impactEffectPrefab: {fileID: 1645580489141898, guid: d8e5b02dabb6f954bb6353a5365b5ac6,
+    type: 2}
   projectilePrefab: {fileID: 1867868208257184, guid: be57e1b1bc398874f88fb23eddee3a5f,
     type: 2}
+  maxNumImpactEffects: 100
   maxNumProjectiles: 20
