@@ -34,8 +34,9 @@ public class BotMovement : MonoBehaviour {
      
     private float range = 4.0f;
     private int multiplier = 15;
-    private int numInfection = 0;
+    private int numInfection = 1;
     private bool didFire;
+    public float speed;
 
 
 
@@ -85,11 +86,6 @@ public class BotMovement : MonoBehaviour {
         }
         else if (distance < 2)
         {
-        //     wayPointInd++;
-        //     if (wayPointInd >= wayPoints.Length) 
-        //     {
-        //         wayPointInd = 0;
-        //     }
             prevPointInd = wayPointInd;
             wayPointInd = Random.Range(0, 8);
             while (prevPointInd == wayPointInd) 
@@ -103,41 +99,20 @@ public class BotMovement : MonoBehaviour {
     void Chase() {
         agent.speed = chaseSpeed;
         agent.SetDestination(player.transform.position);
-        // didFire = true;
-
-        // float distance = Vector3.Distance(this.transform.position, target.transform.position);
-        
-        // if (distance <= MaxDist) 
-        // {
-        //     // Fire();
-        //     Patrol();
-        // }
+        numInfection--;
+  
     }
 
     void Flee() {
-        // Vector3 runTo = this.transform.position + ((this.transform.position - player.transform.position) * multiplier);
-        Vector3 farPoint = this.transform.position;
-        float prevDist = 1000000.0f;
-        foreach (Transform point in wayPoints) 
-        {
-            float currDist = Vector3.Distance(this.transform.position, point.transform.position);
-            if (prevDist < currDist) 
-            {
-                prevDist = currDist;
-                farPoint = point.transform.position;
-            }
-                
-        }
-        agent.SetDestination(farPoint);
+        Vector3 targetDir = player.transform.position - this.transform.position;
+        float step = speed * Time.deltaTime;
+        Vector3 newDir = Vector3.RotateTowards(transform.forward*-1, targetDir, step, 0.0F);
+        Debug.DrawRay(this.transform.position, newDir, Color.red);
+        transform.rotation = Quaternion.LookRotation(newDir);
     }
 
 
-    // if alive
-    // distance < range
-    // 1. flee
-    // 2. chase
-    // else
-    // 3 patrol  
+
 
     void Update() 
     {   
