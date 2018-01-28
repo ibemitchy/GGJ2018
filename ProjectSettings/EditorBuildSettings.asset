@@ -6,5 +6,8 @@ EditorBuildSettings:
   serializedVersion: 2
   m_Scenes:
   - enabled: 1
+    path: Assets/scenes/Frontend.unity
+    guid: e02853a4a676949d0a0b452458ec3429
+  - enabled: 1
     path: Assets/scenes/map-generation-test.unity
     guid: 74b5aaed1e1ceca47887448e2d818467

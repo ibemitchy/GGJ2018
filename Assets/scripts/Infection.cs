@@ -18,6 +18,7 @@ public class Infection : MonoBehaviour {
 		infectedFlag = true;
         infectionNum = 1;
         h = GetComponent<Health>();
+        timer = time;
 	}
 
     public void setInfectionNum(int a){
@@ -80,11 +81,12 @@ public class Infection : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-        timer = time;
+        
         timer -= Time.deltaTime;
-        if (timer <= 00f){
+        if (timer <= 0.0f)
+        {
             DamageHealth();
+			timer = time;
         }
-        timer = time;
 	}
 }

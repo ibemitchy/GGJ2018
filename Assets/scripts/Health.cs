@@ -10,8 +10,8 @@ public class Health : MonoBehaviour
     public RectTransform healthBar;
 
 
-    private float nextActionTime = 0.0f;
-    public float period = 30.0f;
+    //private float nextActionTime = 0.0f;
+    //public float period = 30.0f;
 
 
 
@@ -24,15 +24,15 @@ public class Health : MonoBehaviour
 
     private void Update()
     {
-        if (period > nextActionTime)
-        {
-            nextActionTime += 0.1f;
-        }
-        else
-        {
-            takeDamage(1);
-            nextActionTime = 0.0f;
-        }
+        //if (period > nextActionTime)
+        //{
+        //    nextActionTime += 0.1f;
+        //}
+        //else
+        //{
+        //    takeDamage(1);
+        //    nextActionTime = 0.0f;
+        //}
 
         //// update health bar
         healthBar.sizeDelta = new Vector2(currentHealth, healthBar.sizeDelta.y);

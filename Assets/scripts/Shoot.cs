@@ -24,8 +24,6 @@ public class Shoot : MonoBehaviour
     private GameObject[] projectile;
     //The player's infection information
     private Infection infections;
-    //A 3D vector to store the mouse pointer's current screen position
-    private Vector3 mousePosition;
     //A 3D vector to store the position that the player should face
     private Vector3 lookDirection;
 
@@ -81,9 +79,9 @@ public class Shoot : MonoBehaviour
         if (Input.GetKey(KeyCode.Space) && infections.infectionNum > 0)
         {
             //Check that this player isn't the owner of an infection that's already been launched
-            foreach (GameObject projectile in PoolManager.GetProjectilePool())
+            foreach (GameObject spit in PoolManager.GetProjectilePool())
             {
-                if (projectile.activeSelf && projectile.GetComponent<Projectile>().GetOwner() == gameObject)
+                if (spit.activeSelf && spit.GetComponent<Projectile>().GetOwner() == gameObject)
                 {
                     isOwner = true;
                 }
@@ -157,7 +155,6 @@ public class Shoot : MonoBehaviour
 
         //Initialize values
         scale = 1.0f;
-        mousePosition = Vector3.zero;
         lookDirection = Vector3.zero;
 
         //Initialize arrays
