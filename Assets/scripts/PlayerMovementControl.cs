@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using UnityEngine.Networking;
 
-public class PlayerMovementControl : NetworkBehaviour {
+public class PlayerMovementControl : MonoBehaviour {
     public float speed;
     private bool inverseFlag;
     private Rigidbody body;

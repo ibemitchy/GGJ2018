@@ -35,7 +35,10 @@ public class Health : MonoBehaviour
         //}
 
         //// update health bar
-        healthBar.sizeDelta = new Vector2(currentHealth, healthBar.sizeDelta.y);
+        if(gameObject.CompareTag("Player"))
+        {
+            healthBar.sizeDelta = new Vector2(currentHealth, healthBar.sizeDelta.y);
+        }
         ////
     }   
 
